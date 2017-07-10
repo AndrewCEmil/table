@@ -9,11 +9,6 @@
             #pragma fragment frag
             // include file that contains UnityObjectToWorldNormal helper function
             #include "UnityCG.cginc"
-            struct v3f
-            {
-                fixed4 diff : COLOR0;
-                float4 vertex : SV_POSITION;
-            };
 
             struct v2f {
                 // we'll output world space normal as one of regular ("texcoord") interpolators
