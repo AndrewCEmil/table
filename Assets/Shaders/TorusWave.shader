@@ -47,7 +47,8 @@
             // color ("SV_Target" semantic)
             fixed4 frag (v2f i) : SV_Target
             {
-            	return fixed4(0.0, 0.5, _SinTime.z + i.uv.x + i.uv.y, 1.0);
+            	float smooth_x = abs(i.uv.x - .5) * 2;
+            	return fixed4(0.0, 0.0, _SinTime.y + smooth_x, 1.0);
             }
             ENDCG
         }
