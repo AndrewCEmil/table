@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\Rotator.cs" />
      <None Include="Assets\Shaders\testunlin.shader" />
      <None Include="Assets\Shaders\Sin.shader" />
+     <None Include="Assets\Shaders\TorusWave.shader" />
      <None Include="Assets\Shaders\Torus.shader" />
      <None Include="Assets\Shaders\Normals.shader" />
  <Reference Include="UnityEngine.UI">
