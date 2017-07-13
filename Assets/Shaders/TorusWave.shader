@@ -47,11 +47,9 @@
             // color ("SV_Target" semantic)
             fixed4 frag (v2f i) : SV_Target
             {
-            	float time_x = i.uv.x + _Time.x;
-            	if(time_x % 1 > 0 && time_x % 1 < .01) {
-            		return fixed4(1.0, 0.0, 0.0, 1.0);
-            	}
-            	return fixed4(0.0, 0.0, 1.0, 1.0);
+            	float time_x = i.uv.x + _Time.y;
+            	float brightness = 1.0 - (time_x % 1);
+            	return fixed4(brightness, brightness, brightness, 1.0);
             }
             ENDCG
         }
