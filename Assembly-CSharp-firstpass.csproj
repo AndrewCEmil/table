@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E43CD281-1589-63D7-C61B-FC1A3607E368}</ProjectGuid>
+    <ProjectGuid>{C37D5C72-23F5-42A1-FE4A-8A4A48E13630}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
@@ -51,8 +51,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Deformer.cs" />
-     <Compile Include="Assets\Scripts\Rotator.cs" />
+     <Compile Include="Assets\Plugins\MeshExtrusion.cs" />
+     <Compile Include="Assets\Plugins\Perlin.cs" />
      <None Include="Assets\Shaders\testunlin.shader" />
      <None Include="Assets\Shaders\Sin.shader" />
      <None Include="Assets\Shaders\TorusWave.shader" />
@@ -79,10 +79,6 @@
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{C37D5C72-23F5-42A1-FE4A-8A4A48E13630}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
