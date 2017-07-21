@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Deformer.cs" />
+     <Compile Include="Assets\Scripts\MovingGrid.cs" />
      <Compile Include="Assets\Scripts\Rotator.cs" />
      <None Include="Assets\Shaders\testunlin.shader" />
      <None Include="Assets\Shaders\Sin.shader" />
