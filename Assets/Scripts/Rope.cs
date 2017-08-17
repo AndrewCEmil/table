@@ -33,16 +33,17 @@ public class Rope : MonoBehaviour {
 		for (int i = 0; i < numEles; i++) {
 			GameObject element = Instantiate (baseElement);
 			element.transform.position = directionStep * (i + 1) + payload.transform.position;
-			element.transform.LookAt (anchor.transform.position);
 
 			HingeJoint hinge = previous.GetComponent<HingeJoint> ();
 			hinge.connectedBody = element.GetComponent<Rigidbody> ();
+			previous.transform.LookAt (element.transform.position);
 
 			elements.Add (element);
 			previous = element;
 		}
 		HingeJoint finalHinge = previous.GetComponent<HingeJoint> ();
 		finalHinge.connectedBody = anchor.GetComponent<Rigidbody> ();
+		previous.transform.LookAt (anchor.transform.position);
 	}
 
 	private float NumberOfElements() {
