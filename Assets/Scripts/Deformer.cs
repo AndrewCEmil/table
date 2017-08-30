@@ -11,11 +11,11 @@ public class Deformer : MonoBehaviour {
 		Vector3[] baseVerticies = mesh.vertices;
 		Vector3[] vertices = new Vector3[baseVerticies.Length];
 
-		float timez = Time.time;
+		float timez = Time.time / 10f;
 		for (var i=0; i < baseVerticies.Length; i++) {
 			var vertex = baseVerticies[i];
 			float noise = Mathf.PerlinNoise(timez + vertex.x, timez + vertex.y);
-			vertex.z = noise;
+			vertex.z = noise * 5;
 			vertices[i] = vertex;
 		}
 
