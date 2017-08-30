@@ -50,6 +50,7 @@ public class MovingGrid : MonoBehaviour {
 		mesh.triangles = triangles;
 
 		mesh.RecalculateNormals();
+		mesh.MarkDynamic ();
 	}
 
 	private void OnDrawGizmos () {
