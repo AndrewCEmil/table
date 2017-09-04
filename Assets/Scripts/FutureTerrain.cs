@@ -6,15 +6,16 @@ using UnityEngine;
 public class FutureTerrain : MonoBehaviour {
 
 	private int width;
+	private float noiseScale;
 	private Vector3[] verticies;
 	List<GameObject> terrainMarkers;
 	// Use this for initialization
 	void Start () {
 		width = 10;
+		noiseScale = 5;
 
 		InitTerrainMarkers ();
-		GenerateGrid ();
-		//Crumple ();
+		Generate ();
 	}
 
 	private void InitTerrainMarkers() {
@@ -26,26 +27,7 @@ public class FutureTerrain : MonoBehaviour {
 			});
 	}
 
-	private void Crumple() {
-		MeshFilter meshFilter = gameObject.GetComponent<MeshFilter> ();
-		Mesh mesh = meshFilter.mesh;
-		Vector3[] baseVerticies = mesh.vertices;
-		Vector3[] vertices = new Vector3[baseVerticies.Length];
-
-		float seed = Random.Range (1f, 5f);
-		for (var i=0; i < baseVerticies.Length; i++) {
-			var vertex = baseVerticies[i];
-			float noise = Mathf.PerlinNoise(seed + vertex.x, seed + vertex.y);
-			vertex.z = noise;
-			vertices[i] = vertex;
-		}
-
-		mesh.vertices = vertices;
-		mesh.RecalculateNormals();
-		mesh.RecalculateBounds();
-	}
-
-	private void GenerateGrid() {
+	private void Generate() {
 		for (int i = 1; i < terrainMarkers.Count; i++) {
 			GenerateGridForPair (terrainMarkers [i - 1].transform.position, terrainMarkers [i].transform.position, i);
 		}
@@ -67,9 +49,12 @@ public class FutureTerrain : MonoBehaviour {
 
 		verticies = new Vector3[(width + 1) * (length + 1)];
 		Vector2[] uv = new Vector2[verticies.Length];
+		float seed = Random.Range (1f, 5f);
 		for (int i = 0, y = 0; y <= length; y++) {
 			for (int x = 0; x <= width; x++, i++) {
 				verticies [i] = GetPoint (x, y, lineAxis, widthAxis, origin);
+				float noise = Mathf.PerlinNoise(seed + verticies[i].x, seed + verticies[i].z);
+				verticies [i].y = noise * noiseScale * (1 - (Mathf.Abs ((width / 2f) - x) / (width / 2f)));
 				uv [i] = new Vector2 ((float)x / width, (float)y / length);
 			}
 		}
@@ -97,6 +82,7 @@ public class FutureTerrain : MonoBehaviour {
 		}
 		mesh.normals = normals;
 		mesh.MarkDynamic ();
+		mesh.RecalculateBounds ();
 	}
 
 
