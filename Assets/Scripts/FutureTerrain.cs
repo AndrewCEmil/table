@@ -2,39 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+/*
+ * 1) Find markers
+ * 2) Create pairs
+ * 3) For each pair:
+	 * 4) Create mesh
+	 * 5) Do mesh thing
+ * 
+*/
 public class FutureTerrain : MonoBehaviour {
 
 	private int width;
 	private float noiseScale;
 	private Vector3[] verticies;
-	List<GameObject> terrainMarkers;
 	// Use this for initialization
 	void Start () {
+		Init ();
+	}
+
+	public void Init() {
 		width = 10;
 		noiseScale = 5;
-
-		InitTerrainMarkers ();
-		Generate ();
-	}
-
-	private void InitTerrainMarkers() {
-		GameObject[] terrainMarkersArray = GameObject.FindGameObjectsWithTag ("TerrainMarker");
-		terrainMarkers = new List<GameObject> (terrainMarkersArray);
-		terrainMarkers.Sort(delegate(GameObject x, GameObject y)
-			{
-				return x.name.CompareTo(y.name);
-			});
-	}
-
-	private void Generate() {
-		for (int i = 1; i < terrainMarkers.Count; i++) {
-			GenerateGridForPair (terrainMarkers [i - 1].transform.position, terrainMarkers [i].transform.position, i);
-		}
 	}
 
 	//TODO make sure y vs z is right here
-	private void GenerateGridForPair(Vector3 first, Vector3 second, int gridNum) {
+	public void GenerateGridForPair(Vector3 first, Vector3 second, int gridNum) {
 		Mesh mesh = new Mesh ();
 		mesh.name = "FutureTerrain" + gridNum;
 		GetComponent<MeshFilter> ().mesh = mesh;
@@ -54,6 +46,7 @@ public class FutureTerrain : MonoBehaviour {
 			for (int x = 0; x <= width; x++, i++) {
 				verticies [i] = GetPoint (x, y, lineAxis, widthAxis, origin);
 				float noise = Mathf.PerlinNoise(seed + verticies[i].x, seed + verticies[i].z);
+				//Note that this equation is scaling by distance from the middle
 				verticies [i].y = noise * noiseScale * (1 - (Mathf.Abs ((width / 2f) - x) / (width / 2f)));
 				uv [i] = new Vector2 ((float)x / width, (float)y / length);
 			}
@@ -90,10 +83,4 @@ public class FutureTerrain : MonoBehaviour {
 		return (lineAxis * y) + (widthAxis * x) + origin;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		Mesh mesh = GetComponent<MeshFilter> ().mesh;
-		Vector3[] normals = mesh.normals;
-		Debug.Log ("test");
-	}
 }
