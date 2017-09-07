@@ -2,14 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * 1) Find markers
- * 2) Create pairs
- * 3) For each pair:
-	 * 4) Create mesh
-	 * 5) Do mesh thing
- * 
-*/
 public class FutureTerrain : MonoBehaviour {
 
 	private int width;

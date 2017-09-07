@@ -33,6 +33,7 @@ public class FutureTerrainGenerator : MonoBehaviour {
 		GameObject ft = Instantiate (baseFutureTerrain);
 		FutureTerrain futureTerrain = ft.GetComponent<FutureTerrain> ();
 		futureTerrain.Init ();
+
 		futureTerrain.GenerateGridForPair (aPos, bPos, count);
 		futureTerrains.Add (ft);
 	}
