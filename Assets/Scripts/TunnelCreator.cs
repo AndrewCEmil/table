@@ -75,7 +75,7 @@ public class TunnelCreator : MonoBehaviour {
 	}
 
 	private void FillTrianglesForSegment(int i) {
-		int numTrianglesPerSegment = radialGranularity * 2;
+		int numTrianglesPerSegment = radialGranularity * 2 * 3;
 		int startIndex = i * numTrianglesPerSegment;
 		//for each vertex on segment build 2 triangles:
 			//point, up, right
