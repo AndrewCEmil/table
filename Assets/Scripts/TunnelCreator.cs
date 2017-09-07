@@ -8,13 +8,28 @@ public class TunnelCreator : MonoBehaviour {
 	private Vector3[] verticies;
 	private int[] triangles;
 	private int radialGranularity;
+	private List<float[]> radialPoints;
 	private float width;
 	void Start () {
-		radialGranularity = 4;
+		radialGranularity = 8;
 		width = 5;
+		InitRadialPoints ();
 		InitTunnelMarkers ();
 		Generate ();
 	}
+
+	private void InitRadialPoints() {
+		radialPoints = new List<float[]> ();
+		float radialIncrement = 2f * Mathf.PI / radialGranularity;
+		for (float i = 0; i < radialGranularity; i++) {
+			float[] radialPoint = new float[2];
+			float theta = radialIncrement * i;
+			radialPoint[0] = width * Mathf.Cos (theta);
+			radialPoint [1] = width * Mathf.Sin (theta);
+			radialPoints.Add (radialPoint);
+		}
+	}
+
 	private void InitTunnelMarkers() {
 		GameObject[] tunnelMarkersArray = GameObject.FindGameObjectsWithTag ("TunnelMarker");
 		tunnelMarkers = new List<GameObject> (tunnelMarkersArray);
@@ -61,10 +76,9 @@ public class TunnelCreator : MonoBehaviour {
 		orthog0 = Vector3.Cross (forward, orthog1).normalized;
 
 		//TODO generate circle points...for now hard coded
-		verticies[i * radialGranularity] = markerPosition + (orthog0 + orthog1) * width;
-		verticies[i * radialGranularity + 1] = markerPosition + (orthog0 - orthog1) * width;
-		verticies [i * radialGranularity + 2] = markerPosition - (orthog0 + orthog1) * width;
-		verticies[i * radialGranularity + 3] = markerPosition + (orthog1 - orthog0) * width;
+		for(int j = 0; j < radialPoints.Count; j++) {
+			verticies [i * radialGranularity + j] = markerPosition + (orthog0 * radialPoints [j] [0]) + (orthog1 * radialPoints [j] [1]);
+		}
 	}
 
 	private void FillTriangles() {
