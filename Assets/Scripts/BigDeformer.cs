@@ -25,7 +25,7 @@ public class BigDeformer : MonoBehaviour {
 			Vector3[] baseVerticies = mesh.vertices;
 			Vector3[] vertices = new Vector3[baseVerticies.Length];
 
-			float timez = Time.time + 3f;
+			float timez = (Time.time + 3f) / 5f;
 			for (var i=0; i < baseVerticies.Length; i++) {
 				Vector3 vertex = baseVerticies[i];
 				float scale = GetScale (vertex);
@@ -41,7 +41,11 @@ public class BigDeformer : MonoBehaviour {
 	}
 
 	float GetScale(Vector3 position) {
-		return maxHeight * (GetRadius(position) / maxDistance);
+		return maxHeight * ScaleFunction (position);
+	}
+
+	float ScaleFunction(Vector3 position) {
+		return (GetRadius (position) / maxDistance);
 	}
 
 	float GetRadius(Vector3 position) {
