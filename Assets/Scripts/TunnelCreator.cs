@@ -9,10 +9,8 @@ public class TunnelCreator : MonoBehaviour {
 	private int[] triangles;
 	private int radialGranularity;
 	private List<float[]> radialPoints;
-	private float width;
 	void Start () {
 		radialGranularity = 8;
-		width = 5;
 		InitRadialPoints ();
 		InitTunnelMarkers ();
 		Generate ();
@@ -24,8 +22,8 @@ public class TunnelCreator : MonoBehaviour {
 		for (float i = 0; i < radialGranularity; i++) {
 			float[] radialPoint = new float[2];
 			float theta = radialIncrement * i;
-			radialPoint[0] = width * Mathf.Cos (theta);
-			radialPoint [1] = width * Mathf.Sin (theta);
+			radialPoint[0] = Mathf.Cos (theta);
+			radialPoint [1] = Mathf.Sin (theta);
 			radialPoints.Add (radialPoint);
 		}
 	}
@@ -64,6 +62,7 @@ public class TunnelCreator : MonoBehaviour {
 		Vector3 forward;
 		Vector3 orthog0;
 		Vector3 orthog1;
+		float width = tunnelMarker.GetComponent<TunnelMarker> ().width;
 		Vector3 markerPosition = tunnelMarker.transform.position;
 		if (i == tunnelMarkers.Count - 1) {
 			forward = new Vector3 (0, 0, 1);
@@ -77,7 +76,7 @@ public class TunnelCreator : MonoBehaviour {
 
 		//TODO generate circle points...for now hard coded
 		for(int j = 0; j < radialPoints.Count; j++) {
-			verticies [i * radialGranularity + j] = markerPosition + (orthog0 * radialPoints [j] [0]) + (orthog1 * radialPoints [j] [1]);
+			verticies [i * radialGranularity + j] = markerPosition + (orthog0 * radialPoints [j] [0] * width) + (orthog1 * radialPoints [j] [1] * width);
 		}
 	}
 
