@@ -37,7 +37,7 @@ Shader "DepthEffect"
              
              float4 frag (v2f i) : COLOR
              {
-             	return float4(abs(i.wpos.x / 100), 0, 0, 1);
+             	return float4(0, 0, 1, 1);
              }
              ENDCG
          }
