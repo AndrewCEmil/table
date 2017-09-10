@@ -12,6 +12,7 @@ public class BigDeformer : MonoBehaviour {
 	int count;
 	private float maxX;
 	private float maxZ;
+	private List<Vector3> worlyPoints;
 	void Start() {
 		deformed = false;
 		count = 0;
@@ -19,13 +20,21 @@ public class BigDeformer : MonoBehaviour {
 		storedVector = new Vector3 (0, 0, 0);
 		maxX = 1000f;
 		maxZ = 1000f;
+		InitWorlyPoints ();
+	}
+
+	private void InitWorlyPoints() {
+		float numRandoms = 10;
+		worlyPoints = new List<Vector3> ();
+		for (int i = 0; i < numRandoms; i++) {
+			worlyPoints.Add (new Vector3 (Random.Range (0, maxX), 0, Random.Range (0, maxZ)));
+		}
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if(!deformed) {
 			WorlyDeform ();
-			deformed = true;
 		}
 	}
 
@@ -35,21 +44,12 @@ public class BigDeformer : MonoBehaviour {
 		Vector3[] baseVerticies = mesh.vertices;
 		Vector3[] vertices = new Vector3[baseVerticies.Length];
 
-		//Pick random points
-		float numRandoms = 10;
-		List<Vector3> randomPoints = new List<Vector3> ();
-		for (int i = 0; i < numRandoms; i++) {
-			randomPoints.Add (new Vector3 (Random.Range (0, maxX), 0, Random.Range (0, maxZ)));
-		}
+		UpdateWorlyPoints();
 
-		//Iterate over each vertex
 		for (int i = 0; i < baseVerticies.Length; i++) {
-			//Get min distance
 			Vector3 vertex = baseVerticies[i];
-			//float scale = GetScale (vertex);
-			//Set height to distance
-			float noise = WorlyNoise (vertex, randomPoints);
-			vertex.y = noise * maxHeight * 3f;
+			float noise = WorlyNoise (vertex);
+			vertex.y = noise * GetScale (vertex) - 10f;
 			vertices[i] = vertex;
 		}
 
@@ -58,8 +58,17 @@ public class BigDeformer : MonoBehaviour {
 		mesh.RecalculateBounds();
 	}
 
-	private float WorlyNoise(Vector3 point, List<Vector3> points) {
-		return MinDistance (point, points) / maxDistance;
+	private void UpdateWorlyPoints() {
+		Vector3 curPoint;
+		Vector3 up = new Vector3 (0, 1, 0);
+		for (int i = 0; i < worlyPoints.Count; i++) {
+			curPoint = worlyPoints [i] - middlePosition;
+			worlyPoints [i] = Quaternion.AngleAxis (Time.deltaTime * 10f, up) * curPoint + middlePosition;
+		}
+	}
+
+	private float WorlyNoise (Vector3 point) {
+		return MinDistance (point, worlyPoints) / maxDistance;
 	}
 
 	private float MinDistance(Vector3 point, List<Vector3> points) {
