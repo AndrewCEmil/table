@@ -34,8 +34,43 @@ public class BigDeformer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!deformed) {
-			WorlyDeform ();
+			FBMDeform ();
 		}
+	}
+
+	void FBMDeform() {
+		MeshFilter meshFilter = gameObject.GetComponent<MeshFilter> ();
+		Mesh mesh = meshFilter.mesh;
+		Vector3[] baseVerticies = mesh.vertices;
+		Vector3[] vertices = new Vector3[baseVerticies.Length];
+
+		for (int i = 0; i < baseVerticies.Length; i++) {
+			Vector3 vertex = baseVerticies [i];
+			float scale = GetScale (vertex);
+			float noise = FBMNoise (vertex);
+			vertex.y = noise * scale;
+			vertices[i] = vertex;
+		}
+
+		mesh.vertices = vertices;
+		mesh.RecalculateNormals();
+		mesh.RecalculateBounds();
+	}
+
+
+	private float FBMNoise(Vector3 vertex) {
+		vertex.x = vertex.x / maxX;
+		vertex.z = vertex.z / maxZ;
+		float result = 0f;
+		float amplitud = .5f;
+		int octaves = 6;
+		for (int i = 0; i < octaves; i++) {
+			float noise = Mathf.PerlinNoise (vertex.x + Time.time /5f, vertex.z + Time.time/5f);
+			result += amplitud * noise;
+			vertex = vertex * 4f;
+			amplitud = amplitud * .8f;
+		}
+		return result;
 	}
 
 	void WorlyDeform() {
