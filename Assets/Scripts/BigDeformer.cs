@@ -34,7 +34,7 @@ public class BigDeformer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!deformed) {
-			FBMDeform ();
+			RidgeDeform ();
 		}
 	}
 
@@ -57,6 +57,26 @@ public class BigDeformer : MonoBehaviour {
 		mesh.RecalculateBounds();
 	}
 
+	//Actually very smooth lol
+	void RidgeDeform() {
+		MeshFilter meshFilter = gameObject.GetComponent<MeshFilter> ();
+		Mesh mesh = meshFilter.mesh;
+		Vector3[] baseVerticies = mesh.vertices;
+		Vector3[] vertices = new Vector3[baseVerticies.Length];
+
+		for (int i = 0; i < baseVerticies.Length; i++) {
+			Vector3 vertex = baseVerticies [i];
+			float scale = GetScale (vertex);
+			float noise = RidgeNoise (vertex);
+			vertex.y = noise * scale / 100f - 20f;
+			vertices[i] = vertex;
+		}
+
+		mesh.vertices = vertices;
+		mesh.RecalculateNormals();
+		mesh.RecalculateBounds();
+	}
+
 
 	private float FBMNoise(Vector3 vertex) {
 		vertex.x = vertex.x / maxX;
@@ -69,6 +89,30 @@ public class BigDeformer : MonoBehaviour {
 			result += amplitud * noise;
 			vertex = vertex * 4f;
 			amplitud = amplitud * .8f;
+		}
+		return result;
+	}
+
+	private float RidgeNoise(Vector3 vertex) {
+		vertex.x = vertex.x / maxX;
+		vertex.z = vertex.z / maxZ;
+		float result = 0f;
+		float amplitud = .5f;
+		float lacunarity = 1f;
+		float gain = .8f;
+		int octaves = 8;
+		float prev = 0f;;
+		for (int i = 0; i < octaves; i++) {
+			float noise = Mathf.Abs (Mathf.Sin (Mathf.PerlinNoise (vertex.x + Time.time / 5f, vertex.z + Time.time / 5f)));
+			noise = 1 - noise;
+			noise = noise * noise;
+
+
+			result += amplitud * noise;
+			result += result + noise * amplitud * prev;
+			prev = result;
+			vertex = vertex * lacunarity;
+			amplitud = amplitud * gain;
 		}
 		return result;
 	}
