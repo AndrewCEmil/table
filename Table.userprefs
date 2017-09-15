@@ -1,26 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Shaders/WorldShader.shader">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BigDeformer.cs">
     <Files>
-      <File FileName="Assets/Scripts/MovingGrid.cs" Line="26" Column="26" />
-      <File FileName="Assets/Scripts/TunnelCreator.cs" Line="79" Column="142" />
-      <File FileName="Assets/Scripts/Pusher.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Chain.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Deformer.cs" Line="1" Column="1" />
-      <File FileName="Assets/Shaders/TorusWave.shader" Line="30" Column="41" />
-      <File FileName="Assets/Scripts/Rotator.cs" Line="1" Column="1" />
-      <File FileName="Assets/Shaders/Sin.shader" Line="34" Column="53" />
-      <File FileName="Assets/Sources/CrumpleMesh.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Rope.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MouseLook.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/FutureTerrain.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/TunnelMarker.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/BigGrid.cs" Line="34" Column="40" />
-      <File FileName="Assets/Scripts/BigDeformer.cs" Line="28" Column="37" />
-      <File FileName="Assets/Shaders/testunlin.shader" Line="1" Column="1" />
-      <File FileName="Assets/Shaders/Normals.shader" Line="36" Column="33" />
-      <File FileName="Assets/Shaders/Torus.shader" Line="12" Column="9" />
-      <File FileName="Assets/Shaders/WorldShader.shader" Line="37" Column="35" />
+      <File FileName="Assets/Scripts/BigDeformer.cs" Line="37" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -32,7 +14,8 @@
       <Breakpoint file="/Users/ace/Desktop/Table/Assets/Scripts/TunnelCreator.cs" line="96" column="1" />
       <Breakpoint file="/Users/ace/Desktop/Table/Assets/Scripts/TunnelCreator.cs" line="15" column="1" />
       <Breakpoint file="/Users/ace/Desktop/Table/Assets/Scripts/TunnelCreator.cs" line="73" column="1" />
-      <Breakpoint file="/Users/ace/Desktop/Table/Assets/Scripts/BigDeformer.cs" line="33" column="1" />
+      <Breakpoint file="/Users/ace/Desktop/Table/Assets/Scripts/BigDeformer.cs" line="53" column="1" />
+      <Breakpoint file="/Users/ace/Desktop/Table/Assets/Scripts/BigDeformer.cs" line="50" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

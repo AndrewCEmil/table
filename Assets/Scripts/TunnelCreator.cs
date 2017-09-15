@@ -74,7 +74,6 @@ public class TunnelCreator : MonoBehaviour {
 		orthog1 = Vector3.Cross (forward, orthog0).normalized;
 		orthog0 = Vector3.Cross (forward, orthog1).normalized;
 
-		//TODO generate circle points...for now hard coded
 		for(int j = 0; j < radialPoints.Count; j++) {
 			verticies [i * radialGranularity + j] = markerPosition + (orthog0 * radialPoints [j] [0] * width) + (orthog1 * radialPoints [j] [1] * width);
 		}
