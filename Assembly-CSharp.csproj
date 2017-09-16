@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\BigDeformer.cs" />
      <Compile Include="Assets\Scripts\BigGrid.cs" />
      <Compile Include="Assets\Scripts\CanyonCreator.cs" />
+     <Compile Include="Assets\Scripts\CanyonGenerator.cs" />
      <Compile Include="Assets\Scripts\Chain.cs" />
      <Compile Include="Assets\Scripts\Deformer.cs" />
      <Compile Include="Assets\Scripts\FutureTerrain.cs" />
