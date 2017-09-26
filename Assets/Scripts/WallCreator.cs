@@ -40,20 +40,15 @@ public class WallCreator : MonoBehaviour {
 
 	private void CreateWalls() {
 		CreateLeftWalls ();
-		//CreateRightWalls ();
+		CreateRightWalls ();
 	}
 
 	private void CreateLeftWalls() {
-		CreatePillarTemp (leftPillars [0]);
-		CreatePillarTemp (leftPillars [1]);
-		CreateWall (leftPillars [0], leftPillars [1], 0);
-		/*
 		for (int i = 0; i < leftPillars.Count - 1; i++) {
 			CreateWall (leftPillars [i], leftPillars [i + 1], i);
 			CreatePillarTemp (leftPillars [i]);
 		}
 		CreatePillarTemp (leftPillars [leftPillars.Count - 1]);
-		*/
 	}
 
 	private void CreatePillarTemp(Vector3 pos) {
@@ -94,9 +89,9 @@ public class WallCreator : MonoBehaviour {
 		for (int ti = 0, vi = 0, y = 0; y < height; y++, vi++) {
 			for (int x = 0; x < length; x++, ti += 6, vi++) {
 				triangles[ti] = vi;
+				triangles[ti + 4] = triangles[ti + 1] = vi + (int)length + 1;
 				triangles[ti + 3] = triangles[ti + 2] = vi + 1;
-				triangles[ti + 4] = triangles[ti + 1] = vi + (int)height + 1;
-				triangles[ti + 5] = vi + (int)height + 2;
+				triangles[ti + 5] = vi + (int)length + 2;
 			}
 		}
 
