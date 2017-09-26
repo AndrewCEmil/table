@@ -73,7 +73,7 @@ public class CanyonCreator : MonoBehaviour {
 		Vector3 forward;
 		Vector3 width;
 		Vector3 up;
-		float radius = 10f;
+		float radius = 50f;
 		forward = (bPos - aPos).normalized;
 		up = (forward + new Vector3 (0, 1, 0)).normalized;
 		width = Vector3.Cross (forward, up).normalized;
