@@ -6,16 +6,20 @@ public class WallCreator : MonoBehaviour {
 
 
 	GameObject basePillar;
+	GameObject baseWall;
 	List<GameObject> terrainMarkers;
 	List<Vector3> leftPillars;
 	List<Vector3> rightPillars;
 	float width;
+	float height;
 	void Start () {
 		InitTerrainMarkers ();
 		basePillar = GameObject.Find ("BasePillar");
+		baseWall = GameObject.Find ("BaseWall");
 		leftPillars = new List<Vector3> ();
 		rightPillars = new List<Vector3> ();
 		width = 10f;
+		height = 10f;
 		Generate ();
 		basePillar.SetActive (false);
 	}
@@ -36,15 +40,20 @@ public class WallCreator : MonoBehaviour {
 
 	private void CreateWalls() {
 		CreateLeftWalls ();
-		CreateRightWalls ();
+		//CreateRightWalls ();
 	}
 
 	private void CreateLeftWalls() {
+		CreatePillarTemp (leftPillars [0]);
+		CreatePillarTemp (leftPillars [1]);
+		CreateWall (leftPillars [0], leftPillars [1], 0);
+		/*
 		for (int i = 0; i < leftPillars.Count - 1; i++) {
 			CreateWall (leftPillars [i], leftPillars [i + 1], i);
 			CreatePillarTemp (leftPillars [i]);
 		}
 		CreatePillarTemp (leftPillars [leftPillars.Count - 1]);
+		*/
 	}
 
 	private void CreatePillarTemp(Vector3 pos) {
@@ -60,8 +69,43 @@ public class WallCreator : MonoBehaviour {
 		CreatePillarTemp (rightPillars [rightPillars.Count - 1]);
 	}
 
-	private void CreateWall(Vector3 startPillar, Vector3 endPillar, int count) {
-		//TODO
+	private void CreateWall(Vector3 start, Vector3 end, int count) {
+		Vector3 forward = (end - start).normalized;
+		GameObject wall = Instantiate(baseWall);
+		Mesh mesh = new Mesh ();
+		mesh.name = "Wall" + count;
+		wall.GetComponent<MeshFilter> ().mesh = mesh;
+
+
+		int length = (int) Mathf.Floor (Vector3.Distance (start, end));
+		Vector3[] verticies = new Vector3[((int)height + 1) * (length + 1)];
+		Vector2[] uv = new Vector2[verticies.Length];
+		for (int i = 0, y = 0; y <= height; y++) {
+			for (float x = 0; x <= length; x++, i++) {
+				verticies [i] = (x / length) * forward * length + new Vector3 (0, y, 0) + start;
+				uv [i] = new Vector2 (x / length, (float)y / height);
+			}
+		}
+
+		mesh.vertices = verticies;
+		mesh.uv = uv;
+
+		int[] triangles = new int[(int)height * length * 6];
+		for (int ti = 0, vi = 0, y = 0; y < height; y++, vi++) {
+			for (int x = 0; x < length; x++, ti += 6, vi++) {
+				triangles[ti] = vi;
+				triangles[ti + 3] = triangles[ti + 2] = vi + 1;
+				triangles[ti + 4] = triangles[ti + 1] = vi + (int)height + 1;
+				triangles[ti + 5] = vi + (int)height + 2;
+			}
+		}
+
+
+		mesh.triangles = triangles;
+
+		mesh.RecalculateNormals();
+		mesh.MarkDynamic ();
+		mesh.RecalculateBounds ();
 	}
 
 	private void CreatePillars() {
