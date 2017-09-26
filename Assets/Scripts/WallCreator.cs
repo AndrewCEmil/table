@@ -45,10 +45,10 @@ public class WallCreator : MonoBehaviour {
 
 	private void CreateLeftWalls() {
 		for (int i = 0; i < leftPillars.Count - 1; i++) {
-			CreateWall (leftPillars [i], leftPillars [i + 1], i);
-			CreatePillarTemp (leftPillars [i]);
+			CreateWall (leftPillars [i], leftPillars [i + 1], i, true);
+			//CreatePillarTemp (leftPillars [i]);
 		}
-		CreatePillarTemp (leftPillars [leftPillars.Count - 1]);
+		//CreatePillarTemp (leftPillars [leftPillars.Count - 1]);
 	}
 
 	private void CreatePillarTemp(Vector3 pos) {
@@ -58,13 +58,13 @@ public class WallCreator : MonoBehaviour {
 
 	private void CreateRightWalls() {
 		for (int i = 0; i < rightPillars.Count - 1; i++) {
-			CreateWall (rightPillars [i], rightPillars [i + 1], i);
-			CreatePillarTemp (rightPillars [i]);
+			CreateWall (rightPillars [i], rightPillars [i + 1], i, false);
+			//CreatePillarTemp (rightPillars [i]);
 		}
-		CreatePillarTemp (rightPillars [rightPillars.Count - 1]);
+		//CreatePillarTemp (rightPillars [rightPillars.Count - 1]);
 	}
 
-	private void CreateWall(Vector3 start, Vector3 end, int count) {
+	private void CreateWall(Vector3 start, Vector3 end, int count, bool leftHandWall) {
 		Vector3 forward = (end - start).normalized;
 		GameObject wall = Instantiate(baseWall);
 		Mesh mesh = new Mesh ();
@@ -72,7 +72,7 @@ public class WallCreator : MonoBehaviour {
 		wall.GetComponent<MeshFilter> ().mesh = mesh;
 
 
-		int length = (int) Mathf.Floor (Vector3.Distance (start, end));
+		int length = (int) Mathf.Ceil (Vector3.Distance (start, end));
 		Vector3[] verticies = new Vector3[((int)height + 1) * (length + 1)];
 		Vector2[] uv = new Vector2[verticies.Length];
 		for (int i = 0, y = 0; y <= height; y++) {
@@ -88,10 +88,16 @@ public class WallCreator : MonoBehaviour {
 		int[] triangles = new int[(int)height * length * 6];
 		for (int ti = 0, vi = 0, y = 0; y < height; y++, vi++) {
 			for (int x = 0; x < length; x++, ti += 6, vi++) {
-				triangles[ti] = vi;
-				triangles[ti + 4] = triangles[ti + 1] = vi + (int)length + 1;
-				triangles[ti + 3] = triangles[ti + 2] = vi + 1;
-				triangles[ti + 5] = vi + (int)length + 2;
+				triangles [ti] = vi;
+				if (leftHandWall) {
+					triangles [ti + 3] = triangles [ti + 2] = vi + (int)length + 1;
+					triangles [ti + 4] = triangles [ti + 1] = vi + 1;
+					triangles [ti + 5] = vi + (int)length + 2;
+				} else {
+					triangles [ti + 4] = triangles [ti + 1] = vi + (int)length + 1;
+					triangles [ti + 3] = triangles [ti + 2] = vi + 1;
+					triangles [ti + 5] = vi + (int)length + 2;
+				}
 			}
 		}
 
