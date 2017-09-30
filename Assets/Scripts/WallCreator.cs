@@ -18,7 +18,7 @@ public class WallCreator : MonoBehaviour {
 		baseWall = GameObject.Find ("BaseWall");
 		leftPillars = new List<Vector3> ();
 		rightPillars = new List<Vector3> ();
-		width = 10f;
+		width = 15f;
 		height = 10f;
 		Generate ();
 		basePillar.SetActive (false);
@@ -46,9 +46,7 @@ public class WallCreator : MonoBehaviour {
 	private void CreateLeftWalls() {
 		for (int i = 0; i < leftPillars.Count - 1; i++) {
 			CreateWall (leftPillars [i], leftPillars [i + 1], i, true);
-			//CreatePillarTemp (leftPillars [i]);
 		}
-		//CreatePillarTemp (leftPillars [leftPillars.Count - 1]);
 	}
 
 	private void CreatePillarTemp(Vector3 pos) {
@@ -59,13 +57,12 @@ public class WallCreator : MonoBehaviour {
 	private void CreateRightWalls() {
 		for (int i = 0; i < rightPillars.Count - 1; i++) {
 			CreateWall (rightPillars [i], rightPillars [i + 1], i, false);
-			//CreatePillarTemp (rightPillars [i]);
 		}
-		//CreatePillarTemp (rightPillars [rightPillars.Count - 1]);
 	}
 
 	private void CreateWall(Vector3 start, Vector3 end, int count, bool leftHandWall) {
 		Vector3 forward = (end - start).normalized;
+		Vector3 side = Vector3.Cross (forward, Vector3.up).normalized;
 		GameObject wall = Instantiate(baseWall);
 		Mesh mesh = new Mesh ();
 		mesh.name = "Wall" + count;
@@ -77,7 +74,12 @@ public class WallCreator : MonoBehaviour {
 		Vector2[] uv = new Vector2[verticies.Length];
 		for (int i = 0, y = 0; y <= height; y++) {
 			for (float x = 0; x <= length; x++, i++) {
-				verticies [i] = (x / length) * forward * length + new Vector3 (0, y, 0) + start;
+				float noise = GetNoise ((float)x / length, (float)y / height);
+				if (x == 0 || x == length) {
+					noise = 0f;
+				}
+				//               forward                         side                  up                  offset
+				verticies [i] = (x / length) * forward * length + noise * side + new Vector3 (0, y, 0) + start;
 				uv [i] = new Vector2 (x / length, (float)y / height);
 			}
 		}
@@ -185,6 +187,10 @@ public class WallCreator : MonoBehaviour {
 		leftPillars.Add (leftPillar);
 		rightPillars.Add (rightPillar);
 
+	}
+
+	private float GetNoise(float x, float y) {
+		return Random.insideUnitCircle.x;
 	}
 	
 	// Update is called once per frame
