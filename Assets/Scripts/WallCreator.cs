@@ -12,6 +12,7 @@ public class WallCreator : MonoBehaviour {
 	List<Vector3> rightPillars;
 	float width;
 	float height;
+	float squareLength;
 	void Start () {
 		InitTerrainMarkers ();
 		basePillar = GameObject.Find ("BasePillar");
@@ -20,6 +21,7 @@ public class WallCreator : MonoBehaviour {
 		rightPillars = new List<Vector3> ();
 		width = 15f;
 		height = 10f;
+		squareLength = 4f;
 		Generate ();
 		basePillar.SetActive (false);
 	}
@@ -60,6 +62,12 @@ public class WallCreator : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * TODO chunky:
+		1) Calculate how many vertexes per row/col
+		2) x/y pos is based on vertex_idx * dist_per_vertex
+		3) "length" in triangles is how many per row
+	 */
 	private void CreateWall(Vector3 start, Vector3 end, int count, bool leftHandWall) {
 		Vector3 forward = (end - start).normalized;
 		Vector3 side = Vector3.Cross (forward, Vector3.up).normalized;
