@@ -177,6 +177,7 @@
      <Compile Include="Assets\Scripts\FutureTerrainGenerator.cs" />
      <Compile Include="Assets\Scripts\MouseLook.cs" />
      <Compile Include="Assets\Scripts\MovingGrid.cs" />
+     <Compile Include="Assets\Scripts\MyInputManager.cs" />
      <Compile Include="Assets\Scripts\Pusher.cs" />
      <Compile Include="Assets\Scripts\Rope.cs" />
      <Compile Include="Assets\Scripts\Rotator.cs" />

@@ -74,74 +74,7 @@ public class DemoInputManager : MonoBehaviour {
 #endif  // !RUNNING_ON_ANDROID_DEVICE
 
   void Start() {
-    if (messageCanvas == null) {
-      messageCanvas = transform.Find(MESSAGE_CANVAS_NAME).gameObject;
-      if (messageCanvas != null) {
-        messageText = messageCanvas.transform.Find(MESSAGE_TEXT_NAME).GetComponent<Text>();
-      }
-    }
-    // Message canvas will be enabled later when there's a message to display.
-    messageCanvas.SetActive(false);
-#if !RUNNING_ON_ANDROID_DEVICE
-    if (playerSettingsHasDaydream() || playerSettingsHasCardboard()) {
-      // The list is populated with valid VR SDK(s), pick the first one.
-      gvrEmulatedPlatformType =
-        (UnityEngine.VR.VRSettings.supportedDevices[0] == DAYDREAM_DEVICE_NAME) ?
-        EmulatedPlatformType.Daydream :
-        EmulatedPlatformType.Cardboard;
-    }
-    isDaydream = (gvrEmulatedPlatformType == EmulatedPlatformType.Daydream);
-#else
-    // Running on an Android device.
-    viewerPlatform = GvrSettings.ViewerPlatform;
-    // First loaded device in Player Settings.
-    string vrDeviceName = UnityEngine.VR.VRSettings.loadedDeviceName;
-    if (vrDeviceName != CARDBOARD_DEVICE_NAME &&
-        vrDeviceName != DAYDREAM_DEVICE_NAME) {
-      Debug.LogErrorFormat("Loaded device was '{0}', must be one of '{1}' or '{2}'",
-            vrDeviceName, DAYDREAM_DEVICE_NAME, CARDBOARD_DEVICE_NAME);
-      return;
-    }
-
-    // On a non-Daydream ready phone, fall back to Cardboard if it's present in the list of
-    // enabled VR SDKs.
-    // On a Daydream-ready phone, go into Cardboard mode if it's the currently-paired viewer.
-    if ((!IsDeviceDaydreamReady() && playerSettingsHasCardboard()) ||
-        (IsDeviceDaydreamReady() && playerSettingsHasCardboard() &&
-         GvrSettings.ViewerPlatform == GvrSettings.ViewerPlatformType.Cardboard)) {
-      vrDeviceName = CARDBOARD_DEVICE_NAME;
-    }
-    isDaydream = (vrDeviceName == DAYDREAM_DEVICE_NAME);
-#endif  // !RUNNING_ON_ANDROID_DEVICE
     SetVRInputMechanism();
-  }
-
-  // Runtime switching enabled only in-editor.
-  void Update() {
-    UpdateStatusMessage();
-
-#if !RUNNING_ON_ANDROID_DEVICE
-    UpdateEmulatedPlatformIfPlayerSettingsChanged();
-    if ((isDaydream && gvrEmulatedPlatformType == EmulatedPlatformType.Daydream) ||
-        (!isDaydream && gvrEmulatedPlatformType == EmulatedPlatformType.Cardboard)) {
-      return;
-    }
-    isDaydream = (gvrEmulatedPlatformType == EmulatedPlatformType.Daydream);
-    SetVRInputMechanism();
-#else
-    // Running on an Android device.
-    // Viewer type switched at runtime.
-    if (!IsDeviceDaydreamReady() || viewerPlatform == GvrSettings.ViewerPlatform) {
-      return;
-    }
-    isDaydream = (GvrSettings.ViewerPlatform == GvrSettings.ViewerPlatformType.Daydream);
-    viewerPlatform = GvrSettings.ViewerPlatform;
-    SetVRInputMechanism();
-#endif  // !RUNNING_ON_ANDROID_DEVICE
-  }
-
-  public bool IsCurrentlyDaydream() {
-    return isDaydream;
   }
 
   public static bool playerSettingsHasDaydream() {
@@ -265,41 +198,15 @@ public class DemoInputManager : MonoBehaviour {
   }
 
   private void SetGazeInputActive(bool active) {
-    if (reticlePointer == null) {
-      return;
-    }
     reticlePointer.SetActive(active);
-
-    // Update the pointer type only if this is currently activated.
-    if (!active) {
-      return;
-    }
-
-    GvrReticlePointer pointer =
-        reticlePointer.GetComponent<GvrReticlePointer>();
-    if (pointer != null) {
-      GvrPointerInputModule.Pointer = pointer;
-    }
   }
 
   private void SetControllerInputActive(bool active) {
-    if (controllerMain != null) {
-      controllerMain.SetActive(active);
-    }
-    if (controllerPointer == null) {
-      return;
-    }
+    controllerMain.SetActive(active);
     controllerPointer.SetActive(active);
 
-    // Update the pointer type only if this is currently activated.
-    if (!active) {
-      return;
-    }
-    GvrLaserPointer pointer =
-        controllerPointer.GetComponentInChildren<GvrLaserPointer>(true);
-    if (pointer != null) {
-      GvrPointerInputModule.Pointer = pointer;
-    }
+    GvrLaserPointer pointer = controllerPointer.GetComponentInChildren<GvrLaserPointer>(true);
+    GvrPointerInputModule.Pointer = pointer;
   }
 
 // #endif  // UNITY_ANDROID
