@@ -9,7 +9,11 @@ public class TunnelCreator : MonoBehaviour {
 	private int[] triangles;
 	private int radialGranularity;
 	private List<float[]> radialPoints;
+	private GameObject baseVertex;
+	private GameObject baseLight;
 	void Start () {
+		baseVertex = GameObject.Find ("BaseVertex");
+		baseLight = GameObject.Find ("BaseLight");
 		radialGranularity = 8;
 		InitRadialPoints ();
 		InitTunnelMarkers ();
@@ -40,6 +44,7 @@ public class TunnelCreator : MonoBehaviour {
 	private void Generate() {
 		FillVerticies ();
 		FillTriangles ();
+		FillLights ();
 
 		Mesh mesh = new Mesh ();
 		mesh.name = "Tunnel";
@@ -48,6 +53,13 @@ public class TunnelCreator : MonoBehaviour {
 		mesh.triangles = triangles;
 		mesh.RecalculateBounds ();
 		mesh.RecalculateNormals ();
+	}
+
+	private void FillLights() {
+		for (int i = 0; i < tunnelMarkers.Count; i++) {
+			GameObject light = Instantiate (baseLight);
+			light.transform.position = tunnelMarkers [i].transform.position;
+		}
 	}
 
 	private void FillVerticies() {
@@ -76,7 +88,13 @@ public class TunnelCreator : MonoBehaviour {
 
 		for(int j = 0; j < radialPoints.Count; j++) {
 			verticies [i * radialGranularity + j] = markerPosition + (orthog0 * radialPoints [j] [0] * width) + (orthog1 * radialPoints [j] [1] * width);
+			//CreateDebugVertex (verticies [i * radialGranularity + j]);
 		}
+	}
+
+	private void CreateDebugVertex(Vector3 position) {
+		GameObject vtx = Instantiate (baseVertex);
+		vtx.transform.position = position;
 	}
 
 	private void FillTriangles() {
@@ -103,12 +121,12 @@ public class TunnelCreator : MonoBehaviour {
 			}
 
 			triangles [startIndex + v * 6] = current;
-			triangles [startIndex + v * 6 + 1] = forward;
-			triangles [startIndex + v * 6 + 2] = right;
+			triangles [startIndex + v * 6 + 1] = right;
+			triangles [startIndex + v * 6 + 2] = forward;
 
 			triangles [startIndex + v * 6 + 3] = forward;
-			triangles [startIndex + v * 6 + 4] = forwardRight;
-			triangles [startIndex + v * 6 + 5] = right;
+			triangles [startIndex + v * 6 + 4] = right;
+			triangles [startIndex + v * 6 + 5] = forwardRight;
 		}
 	}
 }
