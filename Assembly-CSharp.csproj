@@ -241,6 +241,11 @@
      <Compile Include="Assets\Scripts\TunnelCreator.cs" />
      <Compile Include="Assets\Scripts\TunnelMarker.cs" />
      <Compile Include="Assets\Scripts\WallCreator.cs" />
+     <Compile Include="Assets\usfxr\Samples\Main\MainSceneSample.cs" />
+     <Compile Include="Assets\usfxr\Scripts\usfxr\SfxrAudioPlayer.cs" />
+     <Compile Include="Assets\usfxr\Scripts\usfxr\SfxrCacheSurrogate.cs" />
+     <Compile Include="Assets\usfxr\Scripts\usfxr\SfxrParams.cs" />
+     <Compile Include="Assets\usfxr\Scripts\usfxr\SfxrSynth.cs" />
      <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
