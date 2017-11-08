@@ -34,8 +34,8 @@ public class BigDeformer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!deformed) {
-			//RidgeDeform ();
-			PerlinDeform ();
+			//PerlinDeform ();
+			WorlyDeform();
 		}
 	}
 
